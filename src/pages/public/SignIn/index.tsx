@@ -8,9 +8,12 @@ import { Link } from 'react-router-dom';
 import formCheck from './formCheck';
 import { ErrorsState, UserDetailsState } from './type';
 
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
 const SignIn = () => {
   const [userDetails, setUserDetails] = useState<UserDetailsState>(initialUserDetailsState);
   const [errors, setErrors] = useState<ErrorsState>(initialErrorsState);
+  const [signingIn, setSigningIn] = useState<boolean>(false);
 
   const handleFormChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const id = _.get(event, 'target.id');
@@ -24,42 +27,54 @@ const SignIn = () => {
     });
   };
 
-  const handleFormSubmission = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmission = async (event: React.FormEvent<HTMLFormElement>) => {
+    setSigningIn(true);
     event.preventDefault();
 
+    await delay(5000);
+
     const errorResponse = formCheck(userDetails);
+
     setErrors(errorResponse);
+    if (_.isEmpty(errorResponse)) {
+      console.log({
+        message: 'Signed in successfully.',
+        errorResponse
+      });
+    }
+    setSigningIn(false);
   };
 
   return (
     <div className="signin_container">
       <DisplayMedium className="signin_heading">Sign In</DisplayMedium>
+
       <form className="signin_form_container" onSubmit={(event) => handleFormSubmission(event)}>
-        <FormControl
-          error={_.includes(errors, 'email') ? 'Please enter a valid email address.' : null}>
+        <FormControl error={_.has(errors, 'email') ? _.get(errors, 'email') : null}>
           <Input
             value={userDetails.email}
             onChange={handleFormChange}
             placeholder="Email address"
             id="email"
-            error={_.includes(errors, 'email')}
+            error={_.has(errors, 'email')}
             autoFocus
+            readOnly={signingIn}
           />
         </FormControl>
 
-        <FormControl
-          error={_.includes(errors, 'password') ? 'Please enter a valid password.' : null}>
+        <FormControl error={_.has(errors, 'password') ? _.get(errors, 'password') : null}>
           <Input
             value={userDetails.password}
             onChange={handleFormChange}
             placeholder="Password"
             id="password"
             type="password"
-            error={_.includes(errors, 'password')}
+            error={_.has(errors, 'password')}
+            readOnly={signingIn}
           />
         </FormControl>
 
-        <Button type="submit" className="signin_button">
+        <Button type="submit" className="signin_button" disabled={signingIn}>
           Sign In
         </Button>
       </form>
@@ -79,4 +94,4 @@ const initialUserDetailsState: UserDetailsState = {
   password: ''
 };
 
-const initialErrorsState: ErrorsState = [];
+const initialErrorsState: ErrorsState = {};

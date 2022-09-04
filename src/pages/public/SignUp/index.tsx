@@ -11,6 +11,7 @@ import { ErrorsState, UserDetailsState } from './type';
 const SignIn = () => {
   const [userDetails, setUserDetails] = useState<UserDetailsState>(initialUserDetailsState);
   const [errors, setErrors] = useState<ErrorsState>(initialErrorsState);
+  const [signingUp, setSigningUp] = useState<boolean>(false);
 
   const handleFormChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const id = _.get(event, 'target.id');
@@ -25,15 +26,25 @@ const SignIn = () => {
   };
 
   const handleFormSubmission = (event: React.FormEvent<HTMLFormElement>) => {
+    setSigningUp(true);
     event.preventDefault();
 
     const errorResponse = formCheck(userDetails);
+
     setErrors(errorResponse);
+    if (_.isEmpty(errorResponse)) {
+      console.log({
+        message: 'Signed up successfully.',
+        errorResponse
+      });
+    }
+    setSigningUp(false);
   };
 
   return (
     <div className="signup_container">
       <DisplayMedium className="signup_heading">Sign Up</DisplayMedium>
+
       <form className="signup_form_container" onSubmit={(event) => handleFormSubmission(event)}>
         <FormControl error={_.has(errors, 'email') ? _.get(errors, 'email') : null}>
           <Input
@@ -41,9 +52,9 @@ const SignIn = () => {
             onChange={handleFormChange}
             placeholder="Email address"
             id="email"
-            type="email"
             error={_.has(errors, 'email')}
             autoFocus
+            readOnly={signingUp}
           />
         </FormControl>
 
@@ -55,6 +66,7 @@ const SignIn = () => {
             id="password"
             type="password"
             error={_.has(errors, 'password')}
+            readOnly={signingUp}
           />
         </FormControl>
 
@@ -69,6 +81,7 @@ const SignIn = () => {
             id="confirmationPassword"
             type="password"
             error={_.has(errors, 'confirmationPassword')}
+            readOnly={signingUp}
           />
         </FormControl>
 
@@ -80,10 +93,11 @@ const SignIn = () => {
             id="contactNumber"
             error={_.has(errors, 'contactNumber')}
             startEnhancer="+91"
+            readOnly={signingUp}
           />
         </FormControl>
 
-        <Button type="submit" className="signup_button">
+        <Button type="submit" className="signup_button" disabled={signingUp}>
           Sign Up
         </Button>
       </form>

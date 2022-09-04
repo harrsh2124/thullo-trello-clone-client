@@ -3,4 +3,6 @@ export type UserDetailsState = {
   password: string;
 };
 
-export type ErrorsState = string[];
+export type ErrorsState = {
+  [id: string]: string;
+};

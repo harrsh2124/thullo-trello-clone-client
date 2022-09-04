@@ -2,13 +2,14 @@ import isEmail from 'validator/lib/isEmail';
 import { ErrorsState, UserDetailsState } from './type';
 
 const formCheck = (userDetails: UserDetailsState) => {
-  const errors: ErrorsState = [];
+  const errors: ErrorsState = {};
+
   if (!userDetails.email || !isEmail(userDetails.email)) {
-    errors.push('email');
+    errors['email'] = 'Please enter a valid email address.';
   }
 
   if (!userDetails.password) {
-    errors.push('password');
+    errors['password'] = 'Please enter a password.';
   }
 
   return errors;
