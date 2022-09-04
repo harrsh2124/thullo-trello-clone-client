@@ -72,6 +72,17 @@ const SignIn = () => {
           />
         </FormControl>
 
+        <FormControl error={_.has(errors, 'contactNumber') ? _.get(errors, 'contactNumber') : null}>
+          <Input
+            value={userDetails.contactNumber}
+            onChange={handleFormChange}
+            placeholder="Contact number"
+            id="contactNumber"
+            error={_.has(errors, 'contactNumber')}
+            startEnhancer="+91"
+          />
+        </FormControl>
+
         <Button type="submit" className="signup_button">
           Sign Up
         </Button>
@@ -90,7 +101,8 @@ export default SignIn;
 const initialUserDetailsState: UserDetailsState = {
   email: '',
   password: '',
-  confirmationPassword: ''
+  confirmationPassword: '',
+  contactNumber: ''
 };
 
 const initialErrorsState: ErrorsState = {};
