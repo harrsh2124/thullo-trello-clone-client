@@ -1,12 +1,8 @@
 import isEmail from 'validator/lib/isEmail';
 import { ErrorsState, UserDetailsState } from './type';
 
-const formCheck = (
-  userDetails: UserDetailsState,
-  setErrors: React.Dispatch<React.SetStateAction<ErrorsState>>
-) => {
+const formCheck = (userDetails: UserDetailsState) => {
   const errors: ErrorsState = [];
-  console.log('Checking form');
   if (!userDetails.email || !isEmail(userDetails.email)) {
     errors.push('email');
   }
@@ -15,7 +11,7 @@ const formCheck = (
     errors.push('password');
   }
 
-  setErrors(errors);
+  return errors;
 };
 
 export default formCheck;

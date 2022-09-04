@@ -32,41 +32,54 @@ const SignIn = () => {
   };
 
   return (
-    <div className="signin_container">
-      <DisplayMedium className="signin_heading">Sign In</DisplayMedium>
-      <form className="signin_form_container" onSubmit={(event) => handleFormSubmission(event)}>
-        <FormControl
-          error={_.includes(errors, 'email') ? 'Please enter a valid email address.' : null}>
+    <div className="signup_container">
+      <DisplayMedium className="signup_heading">Sign Up</DisplayMedium>
+      <form className="signup_form_container" onSubmit={(event) => handleFormSubmission(event)}>
+        <FormControl error={_.has(errors, 'email') ? _.get(errors, 'email') : null}>
           <Input
             value={userDetails.email}
             onChange={handleFormChange}
             placeholder="Email address"
             id="email"
-            error={_.includes(errors, 'email')}
+            type="email"
+            error={_.has(errors, 'email')}
             autoFocus
           />
         </FormControl>
 
-        <FormControl
-          error={_.includes(errors, 'password') ? 'Please enter a valid password.' : null}>
+        <FormControl error={_.has(errors, 'password') ? _.get(errors, 'password') : null}>
           <Input
             value={userDetails.password}
             onChange={handleFormChange}
             placeholder="Password"
             id="password"
             type="password"
-            error={_.includes(errors, 'password')}
+            error={_.has(errors, 'password')}
           />
         </FormControl>
 
-        <Button type="submit" className="signin_button">
-          Sign In
+        <FormControl
+          error={
+            _.has(errors, 'confirmationPassword') ? _.get(errors, 'confirmationPassword') : null
+          }>
+          <Input
+            value={userDetails.confirmationPassword}
+            onChange={handleFormChange}
+            placeholder="Confirm password"
+            id="confirmationPassword"
+            type="password"
+            error={_.has(errors, 'confirmationPassword')}
+          />
+        </FormControl>
+
+        <Button type="submit" className="signup_button">
+          Sign Up
         </Button>
       </form>
 
-      <div className="signup_text">
-        <p>Don&#39;t have an account?</p>
-        <Link to="/signup">Sign Up</Link>
+      <div className="signin_text">
+        <p>Already have an account?</p>
+        <Link to="/signin">Sign In</Link>
       </div>
     </div>
   );
@@ -76,7 +89,8 @@ export default SignIn;
 
 const initialUserDetailsState: UserDetailsState = {
   email: '',
-  password: ''
+  password: '',
+  confirmationPassword: ''
 };
 
-const initialErrorsState: ErrorsState = [];
+const initialErrorsState: ErrorsState = {};
