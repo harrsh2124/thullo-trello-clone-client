@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import AppLayer from '../AppLayer';
 import Dashboard from '../pages/private/Dashboard';
 import SignIn from '../pages/public/SignIn';
 import SignUp from '../pages/public/SignUp';
@@ -8,19 +9,21 @@ import PublicRouter, { PublicRouteProps } from './PublicRouter';
 const IndexRouter = () => {
   return (
     <Routes>
-      <Route
-        path="/signup"
-        element={<PublicRouter {...defaultPublicRouteProps} outlet={<SignUp />} />}
-      />
-      <Route
-        path="/signin"
-        element={<PublicRouter {...defaultPublicRouteProps} outlet={<SignIn />} />}
-      />
+      <Route path="/" element={<AppLayer />}>
+        <Route
+          path="/signup"
+          element={<PublicRouter {...defaultPublicRouteProps} outlet={<SignUp />} />}
+        />
+        <Route
+          path="/signin"
+          element={<PublicRouter {...defaultPublicRouteProps} outlet={<SignIn />} />}
+        />
 
-      <Route
-        path="/"
-        element={<PrivateRouter {...defaultPrivateRouteProps} outlet={<Dashboard />} />}
-      />
+        <Route
+          path="/"
+          element={<PrivateRouter {...defaultPrivateRouteProps} outlet={<Dashboard />} />}
+        />
+      </Route>
     </Routes>
   );
 };
