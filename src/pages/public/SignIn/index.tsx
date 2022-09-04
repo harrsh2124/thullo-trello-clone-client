@@ -8,8 +8,6 @@ import { Link } from 'react-router-dom';
 import formCheck from './formCheck';
 import { ErrorsState, UserDetailsState } from './type';
 
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
-
 const SignIn = () => {
   const [userDetails, setUserDetails] = useState<UserDetailsState>(initialUserDetailsState);
   const [errors, setErrors] = useState<ErrorsState>(initialErrorsState);
@@ -27,11 +25,9 @@ const SignIn = () => {
     });
   };
 
-  const handleFormSubmission = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmission = (event: React.FormEvent<HTMLFormElement>) => {
     setSigningIn(true);
     event.preventDefault();
-
-    await delay(5000);
 
     const errorResponse = formCheck(userDetails);
 
