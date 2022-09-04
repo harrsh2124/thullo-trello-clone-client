@@ -11,7 +11,9 @@ const App = () => {
     <StyletronProvider value={engine}>
       <BaseProvider theme={DarkTheme}>
         <BrowserRouter>
-          <IndexRouter />
+          <div className="app">
+            <IndexRouter />
+          </div>
         </BrowserRouter>
       </BaseProvider>
     </StyletronProvider>
